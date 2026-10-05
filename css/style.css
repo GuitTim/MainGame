@@ -1,0 +1,1263 @@
+/* ===== ОБЩИЕ СТИЛИ ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-bg: #0a0a0a;
+    --color-primary: #ffffff;
+    --color-secondary: #888888;
+    --color-accent: #cccccc;
+    --color-border: #444444;
+    --color-hover: #ffffff;
+    --color-danger: #ff0000;
+    --color-success: #00ff00;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --font-main: 'Courier New', monospace;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--color-bg);
+    color: var(--color-primary);
+    overflow: hidden;
+    line-height: 1.6;
+    filter: brightness(var(--brightness, 1));
+}
+
+/* ===== ЭКРАНЫ ===== */
+.screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    background-color: var(--color-bg);
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* ===== ГЛАВНОЕ МЕНЮ ===== */
+#main-menu {
+    justify-content: center;
+    align-items: center;
+    background: 
+        linear-gradient(90deg, var(--color-border) 1px, transparent 1px) 0 0 / 50px 50px,
+        linear-gradient(0deg, var(--color-border) 1px, transparent 1px) 0 0 / 50px 50px,
+        var(--color-bg);
+}
+
+.menu-container {
+    text-align: center;
+    border: 2px solid var(--color-primary);
+    padding: var(--spacing-lg);
+    background-color: rgba(10, 10, 10, 0.95);
+    max-width: 800px;
+    position: relative;
+}
+
+.menu-container::before,
+.menu-container::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-primary);
+}
+
+.menu-container::before {
+    top: -2px;
+    left: -2px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.menu-container::after {
+    bottom: -2px;
+    right: -2px;
+    border-left: none;
+    border-top: none;
+}
+
+.ship-schema {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-border);
+}
+
+.ship-outline {
+    position: relative;
+    margin: 0 auto;
+    width: 300px;
+    height: 400px;
+    border: 2px solid var(--color-secondary);
+    clip-path: polygon(
+        30% 0%, 70% 0%,
+        85% 10%, 90% 25%,
+        95% 50%, 90% 75%,
+        85% 90%, 70% 100%,
+        30% 100%, 15% 90%,
+        10% 75%, 5% 50%,
+        10% 25%, 15% 10%
+    );
+    animation: shipPulse 3s ease-in-out infinite;
+}
+
+@keyframes shipPulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+.ship-layer {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    padding: var(--spacing-sm);
+    border-top: 1px dashed var(--color-secondary);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.outer-layer {
+    top: 0;
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+}
+
+.living-layer {
+    top: 33.3%;
+    color: var(--color-accent);
+}
+
+.technical-layer {
+    top: 66.6%;
+    color: var(--color-primary);
+}
+
+.game-title {
+    font-size: 48px;
+    letter-spacing: 8px;
+    margin-bottom: var(--spacing-sm);
+    text-shadow: 0 0 10px var(--color-primary);
+    animation: titleFlicker 2s infinite;
+}
+
+@keyframes titleFlicker {
+    0%, 100% { opacity: 1; }
+    98% { opacity: 1; }
+    99% { opacity: 0.8; }
+}
+
+.game-subtitle {
+    font-size: 14px;
+    color: var(--color-secondary);
+    margin-bottom: var(--spacing-lg);
+    letter-spacing: 2px;
+}
+
+.menu-buttons {
+    margin: var(--spacing-lg) 0;
+}
+
+.menu-btn {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    font-family: var(--font-main);
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-primary);
+    transition: left 0.3s;
+    z-index: -1;
+}
+
+.menu-btn:hover::before {
+    left: 0;
+}
+
+.menu-btn:hover {
+    color: var(--color-bg);
+}
+
+.menu-btn.secondary {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+}
+
+.menu-btn.secondary::before {
+    background-color: var(--color-secondary);
+}
+
+.menu-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.ship-status {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border);
+    font-size: 12px;
+    color: var(--color-secondary);
+}
+
+.ship-status p {
+    margin: 4px 0;
+}
+
+/* ===== ЭКРАН ВЫБОРА УРОВНЕЙ ===== */
+#level-select {
+    flex-direction: column;
+    padding: var(--spacing-lg);
+}
+
+.level-select-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-lg);
+}
+
+.level-select-container h2 {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--spacing-md);
+    border-bottom: 2px solid var(--color-primary);
+    letter-spacing: 4px;
+}
+
+.ship-map {
+    border: 2px solid var(--color-primary);
+    padding: var(--spacing-md);
+    overflow-y: auto;
+    background: 
+        linear-gradient(90deg, var(--color-border) 1px, transparent 1px) 0 0 / 30px 30px,
+        linear-gradient(0deg, var(--color-border) 1px, transparent 1px) 0 0 / 30px 30px;
+}
+
+.level-node {
+    position: relative;
+    padding: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+    border: 2px solid var(--color-secondary);
+    cursor: pointer;
+    transition: all 0.3s;
+    background-color: rgba(10, 10, 10, 0.8);
+}
+
+.level-node:hover {
+    border-color: var(--color-primary);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.level-node.completed {
+    border-color: var(--color-success);
+    opacity: 0.6;
+}
+
+.level-node.locked {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.level-node.active {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.level-node.story {
+    border-left: 4px solid var(--color-accent);
+}
+
+.level-node h4 {
+    margin-bottom: var(--spacing-sm);
+    font-size: 16px;
+}
+
+.level-node p {
+    font-size: 12px;
+    color: var(--color-secondary);
+}
+
+.level-status {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    font-size: 10px;
+    padding: 4px 8px;
+    border: 1px solid;
+}
+
+.mission-info {
+    border: 2px solid var(--color-primary);
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+}
+
+.mission-info h3 {
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.mission-info p {
+    margin-bottom: var(--spacing-md);
+    color: var(--color-secondary);
+    font-size: 14px;
+}
+
+#mission-objectives {
+    margin: var(--spacing-md) 0;
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-border);
+    flex-grow: 1;
+}
+
+.objective-item {
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+    border-left: 2px solid var(--color-accent);
+    padding-left: var(--spacing-md);
+}
+
+/* ===== ИГРОВОЙ ЭКРАН ===== */
+#game-screen {
+    flex-direction: column;
+    position: relative;
+}
+
+.level-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 400;
+    pointer-events: all;
+    backdrop-filter: blur(2px);
+}
+
+.level-overlay.visible {
+    display: flex;
+}
+
+.level-overlay .overlay-message {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: #ffffff;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.top-panel {
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-bottom: 2px solid var(--color-primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--spacing-lg);
+}
+
+.panel-section {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.panel-label {
+    color: var(--color-secondary);
+    font-size: 12px;
+}
+
+.panel-section span:not(.panel-label) {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.resources {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-border);
+}
+
+.resource-rate {
+    font-size: 12px;
+    color: var(--color-success);
+    margin-left: var(--spacing-sm);
+}
+
+#game-canvas {
+    flex-grow: 1;
+    display: block;
+    background-color: #1a1a1a;
+    border-right: 2px solid var(--color-primary);
+}
+
+.side-panel {
+    position: fixed;
+    right: 0;
+    top: 60px;
+    width: 320px;
+    height: calc(100vh - 60px);
+    background-color: rgba(0, 0, 0, 0.95);
+    border-left: 2px solid var(--color-primary);
+    overflow-y: auto;
+    padding: var(--spacing-md);
+}
+
+.side-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.side-panel::-webkit-scrollbar-track {
+    background: var(--color-bg);
+}
+
+.side-panel::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border: 1px solid var(--color-primary);
+}
+
+.panel-block {
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.panel-block:last-child {
+    border-bottom: none;
+}
+
+.panel-block h3 {
+    margin-bottom: var(--spacing-md);
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--color-accent);
+}
+
+/* ===== УПРАВЛЕНИЕ ПЕРСОНАЛОМ ===== */
+.personnel-info {
+    border: 1px solid var(--color-border);
+    padding: var(--spacing-sm);
+}
+
+.personnel-row {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.personnel-icon {
+    font-size: 20px;
+    margin-right: var(--spacing-sm);
+}
+
+.personnel-label {
+    flex-grow: 1;
+    font-size: 14px;
+}
+
+.personnel-count {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: var(--spacing-sm);
+    min-width: 30px;
+    text-align: right;
+}
+
+/* Контролы конверсии */
+.conversion-controls {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-border);
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.conversion-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.personnel-input {
+    width: 60px;
+    padding: 6px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--color-primary);
+    border: 1px solid var(--color-border);
+    font-family: var(--font-main);
+    font-size: 14px;
+    text-align: center;
+}
+
+.personnel-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+/* Список активных конверсий */
+.conversions-list {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.conversion-item {
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+    border: 1px solid var(--color-border);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.conversion-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+    font-size: 11px;
+}
+
+.conversion-item-progress {
+    width: 100%;
+    height: 8px;
+    border: 1px solid var(--color-primary);
+    margin-top: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.conversion-item-fill {
+    height: 100%;
+    background-color: var(--color-primary);
+    transition: width 0.1s linear;
+}
+
+.small-btn {
+    padding: 4px 12px;
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 12px;
+}
+
+.small-btn:hover {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+}
+
+.small-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* ===== БАШНИ И БАРРИКАДЫ ===== */
+.towers-list,
+.barricades-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.build-item {
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.build-item:hover {
+    border-color: var(--color-primary);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.build-item.selected {
+    border-color: var(--color-primary);
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.build-item.locked {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.build-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.build-item-name {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.build-item-cost {
+    font-size: 12px;
+    color: var(--color-accent);
+}
+
+.build-item-desc {
+    font-size: 11px;
+    color: var(--color-secondary);
+    line-height: 1.4;
+}
+
+/* ===== ИНФОРМАЦИЯ О ВЫБРАННОМ ОБЪЕКТЕ ===== */
+#selected-info {
+    display: none;
+}
+
+#selected-details {
+    font-size: 12px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px dotted var(--color-border);
+}
+
+.detail-label {
+    color: var(--color-secondary);
+}
+
+/* ===== СТИЛИ ДЛЯ ИНФОРМАЦИИ О БАШНЯХ И БАРРИКАДАХ ===== */
+.tower-stats, .barricade-stats {
+    margin-top: 10px;
+}
+
+.tower-abilities-block {
+    margin-top: 12px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 8px;
+}
+
+.abilities-title {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-secondary);
+    margin-bottom: 4px;
+}
+
+.abilities-title.muted {
+    color: #555555;
+}
+
+.ability-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ability-list li {
+    margin: 4px 0;
+    line-height: 1.4;
+}
+
+.ability-list li strong {
+    color: var(--color-accent);
+}
+
+.next-ability-block {
+    margin-top: 12px;
+    padding: 8px;
+    border: 1px dashed var(--color-accent);
+    background: rgba(0, 255, 255, 0.05);
+}
+
+.next-ability-name {
+    font-weight: bold;
+    color: var(--color-accent);
+    font-size: 12px;
+}
+
+.next-ability-desc {
+    font-size: 11px;
+    color: var(--color-secondary);
+    margin-top: 2px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px dotted var(--color-border);
+}
+
+.stat-row:last-child {
+    border-bottom: none;
+}
+
+.progress-bar {
+    position: relative;
+    height: 20px;
+    background-color: #333333;
+    border: 1px solid var(--color-border);
+    margin-bottom: 5px;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--color-success);
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 11px;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+}
+
+.upgrade-section, .demolish-section {
+    padding-top: 10px;
+    margin-top: 15px;
+    border-top: 1px solid var(--color-border);
+}
+
+.upgrade-tower-btn, .upgrade-barricade-btn,
+.demolish-tower-btn, .demolish-barricade-btn {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    font-size: 12px;
+}
+
+.upgrade-tower-btn:disabled, .upgrade-barricade-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ===== КНОПКИ УПРАВЛЕНИЯ ИГРОЙ ===== */
+.game-controls {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 200;
+}
+
+.control-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    font-family: var(--font-main);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 200px;
+}
+
+.control-btn .btn-icon {
+    font-size: 20px;
+}
+
+.control-btn:hover {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    transform: translateX(5px);
+}
+
+.control-btn.active {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    box-shadow: 0 0 18px rgba(0, 255, 255, 0.35);
+}
+
+.control-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.wave-btn {
+    border-color: var(--color-success);
+    color: var(--color-success);
+    animation: pulseWaveBtn 2s infinite;
+}
+
+.wave-btn:hover {
+    background-color: var(--color-success);
+}
+
+@keyframes pulseWaveBtn {
+    0%, 100% { box-shadow: 0 0 10px var(--color-success); }
+    50% { box-shadow: 0 0 25px var(--color-success); }
+}
+
+.pause-btn {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+}
+
+.pause-btn:hover {
+    background-color: var(--color-secondary);
+}
+
+.pause-btn.paused {
+    border-color: var(--color-success);
+    color: var(--color-success);
+}
+
+.pause-btn.paused .btn-icon::before {
+    content: '▶';
+}
+
+/* ===== МИНИ-МЕНЮ ВНУТРИ ИГРЫ ===== */
+.mini-menu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.98);
+    border: 3px solid var(--color-primary);
+    padding: 30px;
+    min-width: 400px;
+    max-width: 500px;
+    z-index: 500;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.5);
+    animation: miniMenuAppear 0.3s ease-out;
+}
+
+@keyframes miniMenuAppear {
+    from {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+.mini-menu h3 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--color-primary);
+    letter-spacing: 3px;
+}
+
+.mini-menu .menu-btn {
+    margin: 10px 0;
+}
+
+.mini-stats {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid var(--color-border);
+    font-size: 14px;
+}
+
+.mini-stats .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px dotted var(--color-border);
+}
+
+.mini-stats .stat-row:last-child {
+    border-bottom: none;
+}
+
+.mini-stats .stars {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--color-border);
+}
+
+/* ===== ПАНЕЛЬ ДИАЛОГОВ ВО ВРЕМЯ ИГРЫ ===== */
+.story-panel {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    max-width: 90vw;
+    background-color: rgba(0, 0, 0, 0.95);
+    border: 2px solid var(--color-primary);
+    z-index: 150;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateX(-50%) translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+.story-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--color-border);
+}
+
+#story-character {
+    font-weight: bold;
+    color: var(--color-accent);
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.story-close-btn {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+}
+
+.story-close-btn:hover {
+    color: var(--color-danger);
+}
+
+.story-content {
+    padding: var(--spacing-md);
+}
+
+#story-message {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-primary);
+}
+
+/* ===== ДИАЛОГОВЫЕ ОКНА ===== */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.dialog-box {
+    background-color: var(--color-bg);
+    border: 3px solid var(--color-primary);
+    padding: var(--spacing-lg);
+    max-width: 600px;
+    min-width: 400px;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
+    animation: dialogAppear 0.3s ease-out;
+}
+
+@keyframes dialogAppear {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+#dialog-title {
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-primary);
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+#dialog-text {
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.8;
+    color: var(--color-accent);
+}
+
+.dialog-choices {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.choice-btn {
+    padding: var(--spacing-md);
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    font-family: var(--font-main);
+    font-size: 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+}
+
+.choice-btn:hover {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+}
+
+.dialog-timer {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+    color: var(--color-danger);
+    font-weight: bold;
+}
+
+/* ===== НАСТРОЙКИ ===== */
+.settings-content {
+    padding: var(--spacing-md) 0;
+}
+
+.setting-item {
+    margin-bottom: var(--spacing-lg);
+}
+
+.setting-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-sm);
+    font-size: 14px;
+    color: var(--color-accent);
+}
+
+.setting-slider {
+    width: 100%;
+    height: 8px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--color-border);
+    outline: none;
+    border: 1px solid var(--color-primary);
+}
+
+.setting-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--color-primary);
+    cursor: pointer;
+    border: 2px solid var(--color-bg);
+}
+
+.setting-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--color-primary);
+    cursor: pointer;
+    border: 2px solid var(--color-bg);
+}
+
+.button-group {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.setting-btn {
+    flex: 1;
+    padding: var(--spacing-sm);
+    background-color: transparent;
+    color: var(--color-secondary);
+    border: 1px solid var(--color-border);
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 12px;
+}
+
+.setting-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.setting-btn.active {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    border-color: var(--color-primary);
+}
+
+/* ===== КУРСОР ДЛЯ СТРОИТЕЛЬСТВА ===== */
+.build-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1000;
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgba(0, 255, 0, 0.7);
+    border-radius: 50%;
+    background-color: rgba(0, 255, 0, 0.1);
+    transform: translate(-50%, -50%);
+}
+
+/* ===== ЗАТЕМНЕНИЕ ЭКРАНА ПРИ ПОБЕДЕ/ПОРАЖЕНИИ ===== */
+.overlay-darken {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+@media (max-width: 1400px) {
+    .side-panel {
+        width: 280px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .level-select-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .story-panel {
+        width: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .story-panel {
+        width: 95vw;
+        bottom: 60px;
+    }
+    
+    .dialog-box {
+        min-width: 90vw;
+        max-width: 90vw;
+    }
+    
+    .game-controls {
+        bottom: 15px;
+        left: 15px;
+    }
+    
+    .control-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+        min-width: 150px;
+    }
+}
+
+.tower-stats, .barricade-stats {
+    margin-top: 10px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px dotted var(--color-border);
+}
+
+.stat-row:last-child {
+    border-bottom: none;
+}
+
+.progress-bar {
+    position: relative;
+    height: 20px;
+    background-color: #333333;
+    border: 1px solid var(--color-border);
+    margin-bottom: 5px;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--color-success);
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 11px;
+    color: white;
+    text-shadow: 1px 1px 1px black;
+}
+
+.upgrade-section, .demolish-section {
+    padding-top: 10px;
+    margin-top: 15px;
+    border-top: 1px solid var(--color-border);
+}
+
+.upgrade-tower-btn, .upgrade-barricade-btn,
+.demolish-tower-btn, .demolish-barricade-btn {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    font-size: 12px;
+}
+
+.upgrade-tower-btn:disabled, .upgrade-barricade-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

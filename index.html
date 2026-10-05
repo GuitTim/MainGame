@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Bastion - Tower Defense</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Главное меню -->
+    <div id="main-menu" class="screen active">
+        <div class="menu-container">
+            <div class="ship-schema">
+                <div class="ship-outline">
+                    <div class="ship-layer outer-layer">ВНЕШНИЙ СЛОЙ [ПОВРЕЖДЁН]</div>
+                    <div class="ship-layer living-layer">ЖИЛОЙ СЛОЙ</div>
+                    <div class="ship-layer technical-layer">ТЕХНИЧЕСКИЙ СЛОЙ</div>
+                </div>
+            </div>
+            <h1 class="game-title">COSMIC BASTION</h1>
+            <p class="game-subtitle">// ПРОТОКОЛ АВАРИЙНОЙ ЗАЩИТЫ //</p>
+            <div class="menu-buttons">
+                <button class="menu-btn" id="start-game-btn">НАЧАТЬ МИССИЮ</button>
+                <button class="menu-btn" id="continue-btn" style="display:none;">ПРОДОЛЖИТЬ</button>
+                <button class="menu-btn" id="help-btn">ИНСТРУКЦИИ</button>
+                <button class="menu-btn" id="settings-menu-btn">НАСТРОЙКИ</button>
+                <button class="menu-btn secondary" id="reset-progress-btn">НАЧАТЬ ЗАНОВО</button>
+            </div>
+            <div class="ship-status">
+                <p>СТАТУС: КРИТИЧЕСКИЙ</p>
+                <p>УГРОЗА: ВРАЖДЕБНАЯ БИОМАССА</p>
+                <p>ЭКИПАЖ: В ОЖИДАНИИ ПРИКАЗОВ</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Карта уровней -->
+    <div id="level-select" class="screen">
+        <div class="level-select-container">
+            <h2>СХЕМА КОРАБЛЯ - ВЫБОР СЕКТОРА</h2>
+            <div id="ship-map" class="ship-map">
+                <!-- Уровни будут генерироваться динамически -->
+            </div>
+            <div class="mission-info">
+                <h3 id="mission-title">ВЫБЕРИТЕ СЕКТОР</h3>
+                <p id="mission-description"></p>
+                <div id="mission-objectives"></div>
+                <button class="menu-btn" id="start-mission-btn" style="display:none;">НАЧАТЬ ЗАЩИТУ</button>
+                <button class="menu-btn secondary" id="back-to-menu-btn">ОТМЕНА</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Игровой экран -->
+    <div id="game-screen" class="screen">
+        <!-- Верхняя панель управления -->
+        <div id="top-panel" class="top-panel">
+            <div class="panel-section">
+                <span class="panel-label">УРОВЕНЬ:</span>
+                <span id="level-name">---</span>
+            </div>
+            <div class="panel-section">
+                <span class="panel-label">ВОЛНА:</span>
+                <span id="wave-counter">0/0</span>
+            </div>
+            <div class="panel-section resources">
+                <span class="panel-label">РЕСУРСЫ:</span>
+                <span id="resources-count">0</span>
+                <span class="resource-rate">+<span id="resource-rate">0</span>/с</span>
+            </div>
+            <div class="panel-section">
+                <button class="small-btn" id="toggle-view-btn" title="Переключить на жилой отсек">
+                    <span id="view-icon">🏢</span> <span id="view-label">КОРИДОР</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Основной игровой canvas -->
+        <canvas id="game-canvas"></canvas>
+
+        <!-- Кнопки управления игрой (внизу слева) -->
+        <div class="game-controls">
+            <button id="start-wave-btn" class="control-btn wave-btn">
+                <span class="btn-icon">▶</span>
+                <span class="btn-text">НАЧАТЬ ВОЛНУ 1</span>
+            </button>
+            <button id="pause-game-btn" class="control-btn pause-btn">
+                <span class="btn-icon">⏸</span>
+                <span class="btn-text">ПАУЗА</span>
+            </button>
+            <button id="speed-wave-btn" class="control-btn speed-btn">
+                <span class="btn-icon">⏩</span>
+                <span class="btn-text">УСКОРЕНИЕ</span>
+            </button>
+        </div>
+
+        <!-- Мини-меню паузы -->
+        <div id="mini-pause-menu" class="mini-menu" style="display:none;">
+            <h3>// ПАУЗА //</h3>
+            <button class="menu-btn" id="resume-game-btn">ПРОДОЛЖИТЬ</button>
+            <button class="menu-btn secondary" id="restart-game-btn">ПЕРЕЗАПУСТИТЬ</button>
+            <button class="menu-btn secondary" id="quit-game-btn">ВЫХОД В МЕНЮ</button>
+        </div>
+
+        <!-- Мини-меню победы -->
+        <div id="mini-victory-menu" class="mini-menu" style="display:none;">
+            <h3>// СЕКТОР ЗАЩИЩЁН //</h3>
+            <div id="mini-victory-stats" class="mini-stats"></div>
+            <button class="menu-btn" id="next-level-btn">СЛЕДУЮЩИЙ УРОВЕНЬ</button>
+            <button class="menu-btn secondary" id="victory-menu-btn">В МЕНЮ</button>
+        </div>
+
+        <!-- Мини-меню поражения -->
+        <div id="mini-defeat-menu" class="mini-menu" style="display:none;">
+            <h3>// КРИТИЧЕСКИЙ ПРОВАЛ //</h3>
+            <div id="mini-defeat-stats" class="mini-stats"></div>
+            <button class="menu-btn" id="retry-game-btn">ПОВТОРИТЬ</button>
+            <button class="menu-btn secondary" id="defeat-menu-btn">В МЕНЮ</button>
+        </div>
+
+        <!-- Боковая панель управления -->
+        <div id="side-panel" class="side-panel">
+            <!-- Управление персоналом -->
+            <div class="panel-block">
+                <h3>ПЕРСОНАЛ</h3>
+                <div class="personnel-info">
+                    <div class="personnel-row">
+                        <span class="personnel-icon">⚒</span>
+                        <span class="personnel-label">Шахтёры:</span>
+                        <span id="miners-count" class="personnel-count">0</span>
+                    </div>
+                    <div class="personnel-row">
+                        <span class="personnel-icon">⚔</span>
+                        <span class="personnel-label">Военные:</span>
+                        <span id="military-count" class="personnel-count">0</span>
+                    </div>
+                </div>
+                
+                <!-- Расширенная конверсия -->
+                <div class="conversion-controls">
+                    <div class="conversion-group">
+                        <label style="font-size: 11px; color: #888;">Шахтёры → Военные:</label>
+                        <div style="display: flex; gap: 5px; margin-top: 5px;">
+                            <input type="number" id="miners-to-military-input" min="1" max="99" value="1" class="personnel-input">
+                            <button class="small-btn" id="convert-to-military-multi">ПЕРЕВЕСТИ</button>
+                        </div>
+                    </div>
+                    <div class="conversion-group" style="margin-top: 10px;">
+                        <label style="font-size: 11px; color: #888;">Военные → Шахтёры:</label>
+                        <div style="display: flex; gap: 5px; margin-top: 5px;">
+                            <input type="number" id="military-to-miners-input" min="1" max="99" value="1" class="personnel-input">
+                            <button class="small-btn" id="convert-to-miner-multi">ПЕРЕВЕСТИ</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Список активных конверсий -->
+                <div id="conversions-list" class="conversions-list" style="margin-top: 10px;">
+                    <!-- Динамически добавляются активные конверсии -->
+                </div>
+            </div>
+
+            <!-- Строительство башен -->
+            <div class="panel-block">
+                <h3>ВООРУЖЕНИЕ</h3>
+                <div id="towers-list" class="towers-list">
+                    <!-- Башни генерируются динамически -->
+                </div>
+            </div>
+
+            <!-- Баррикады -->
+            <div class="panel-block">
+                <h3>БАРРИКАДЫ</h3>
+                <div id="barricades-list" class="barricades-list">
+                    <!-- Баррикады генерируются динамически -->
+                </div>
+            </div>
+
+            <!-- Информация о выбранном объекте -->
+            <div class="panel-block" id="selected-info" style="display:none;">
+                <h3>ИНФОРМАЦИЯ</h3>
+                <div id="selected-details"></div>
+            </div>
+
+            <!-- Кнопки управления -->
+            <div class="panel-block">
+                <button class="menu-btn secondary full-width" id="settings-btn">НАСТРОЙКИ</button>
+                <button class="menu-btn secondary full-width" id="pause-btn">ПАУЗА</button>
+                <button class="menu-btn secondary full-width" id="quit-level-btn">ВЫХОД</button>
+            </div>
+        </div>
+        
+        <!-- Панель диалогов во время игры -->
+        <div id="story-panel" class="story-panel" style="display:none;">
+            <div class="story-header">
+                <span id="story-character">КОМАНДИР</span>
+                <button class="story-close-btn" id="story-close-btn">×</button>
+            </div>
+            <div class="story-content">
+                <p id="story-message">Сообщение от командования...</p>
+            </div>
+        </div>
+        
+        <!-- Курсор для строительства -->
+        <div id="build-cursor" class="build-cursor" style="display:none;"></div>
+    </div>
+
+    <!-- Диалоговое окно для событий -->
+    <div id="dialog-overlay" class="dialog-overlay" style="display:none;">
+        <div class="dialog-box">
+            <h3 id="dialog-title">ВХОДЯЩЕЕ СООБЩЕНИЕ</h3>
+            <p id="dialog-text"></p>
+            <div id="dialog-choices" class="dialog-choices">
+                <!-- Выборы генерируются динамически -->
+            </div>
+            <div id="dialog-timer" class="dialog-timer" style="display:none;">
+                <span>Время на решение: <span id="timer-value">10</span>с</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Окно настроек -->
+    <div id="settings-overlay" class="dialog-overlay" style="display:none;">
+        <div class="dialog-box" style="max-width: 500px;">
+            <h3 style="margin-bottom: 20px; text-align: center; border-bottom: 2px solid #ffffff; padding-bottom: 10px;">// НАСТРОЙКИ //</h3>
+            
+            <div class="settings-content">
+                <!-- Яркость -->
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <span>ЯРКОСТЬ:</span>
+                        <span id="brightness-value">100%</span>
+                    </label>
+                    <input type="range" id="brightness-slider" min="50" max="150" value="100" class="setting-slider">
+                </div>
+                
+                <!-- Звук -->
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <span>ГРОМКОСТЬ:</span>
+                        <span id="volume-value">50%</span>
+                    </label>
+                    <input type="range" id="volume-slider" min="0" max="100" value="50" class="setting-slider">
+                </div>
+                
+                <!-- Скорость врагов -->
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <span>СКОРОСТЬ ВРАГОВ:</span>
+                        <span id="enemy-speed-value">Нормальная</span>
+                    </label>
+                    <div class="button-group">
+                        <button class="setting-btn" id="speed-slow">МЕДЛЕННО</button>
+                        <button class="setting-btn active" id="speed-normal">НОРМАЛЬНО</button>
+                        <button class="setting-btn" id="speed-fast">БЫСТРО</button>
+                    </div>
+                </div>
+                
+                <!-- Сброс настроек -->
+                <div class="setting-item" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #444;">
+                    <button class="menu-btn secondary full-width" id="reset-settings-btn">СБРОСИТЬ НАСТРОЙКИ</button>
+                </div>
+            </div>
+            
+            <button class="menu-btn" id="close-settings-btn" style="margin-top: 20px; width: 100%;">ПРИМЕНИТЬ</button>
+        </div>
+    </div>
+
+    <!-- Подключение скриптов -->
+    <script src="js/enemies.js"></script>
+    <script src="js/towers.js"></script>
+    <script src="js/levels.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/game.js"></script>
+
+    <script>
+        // Глобальный флаг для отслеживания загрузки
+        window.gameLoaded = false;
+
+        // Функция сохранения всего прогресса
+        window.saveGameProgress = function() {
+            if (!window.campaign || !window.game) return;
+
+            const saveData = {
+                campaign: {
+                    currentLevelIndex: window.campaign.currentLevelIndex,
+                    completedLevels: [...window.campaign.completedLevels],
+                    totalStars: window.campaign.totalStars,
+                    levels: window.campaign.levels.map(level => ({
+                        id: level.id,
+                        completed: level.completed,
+                        stars: level.stars,
+                        locked: level.locked
+                    }))
+                },
+                gameState: window.game.serializeState ? window.game.serializeState() : null,
+                achievements: window.game?.achievements || {},
+                timestamp: Date.now(),
+                version: '1.0'
+            };
+
+            try {
+                localStorage.setItem('cosmicBastionSave', JSON.stringify(saveData));
+                console.log('💾 Game progress saved locally');
+            } catch (e) {
+                console.error('❌ Failed to save game progress:', e);
+            }
+        };
+
+        // Функция загрузки всего прогресса
+        window.loadGameProgress = function() {
+            try {
+                const saved = localStorage.getItem('cosmicBastionSave');
+                if (!saved) {
+                    console.log('🆕 No saved progress found');
+                    return null;
+                }
+
+                const data = JSON.parse(saved);
+                console.log('✅ Game progress loaded from localStorage');
+                return data;
+            } catch (e) {
+                console.error('❌ Failed to load game progress:', e);
+                return null;
+            }
+        };
+
+        // Автоматическое сохранение при закрытии вкладки
+        window.addEventListener('beforeunload', () => {
+            if (window.game && window.game.running) {
+                window.saveGameProgress();
+            }
+        });
+
+        console.log('Local storage system initialized');
+    </script>
+</body>
+</html>
